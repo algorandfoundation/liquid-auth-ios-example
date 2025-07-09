@@ -6,6 +6,7 @@ import MnemonicSwift
 import SwiftCBOR
 import UIKit
 import x_hd_wallet_api
+import LiquidAuthSDK
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
     private var tableDataSource: UITableViewDataSource?

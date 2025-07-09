@@ -8,20 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		6E0A054F2DC77745004A74E2 /* deterministicP256-swift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E0A054E2DC77745004A74E2 /* deterministicP256-swift */; };
-		6E0A05A02DCA3132004A74E2 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 6E0A059F2DCA3132004A74E2 /* SocketIO */; };
-		6E0F0F402DF6B382002035B7 /* SwiftCBOR in Frameworks */ = {isa = PBXBuildFile; productRef = 6E0F0F3F2DF6B382002035B7 /* SwiftCBOR */; };
-		6E0F0F422DF6B382002035B7 /* WebRTC in Frameworks */ = {isa = PBXBuildFile; productRef = 6E0F0F412DF6B382002035B7 /* WebRTC */; };
 		6E0F0F442DF6B382002035B7 /* MnemonicSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E0F0F432DF6B382002035B7 /* MnemonicSwift */; };
-		6E0F0F462DF6B382002035B7 /* Base32 in Frameworks */ = {isa = PBXBuildFile; productRef = 6E0F0F452DF6B382002035B7 /* Base32 */; };
 		6E0F0F482DF6B382002035B7 /* x-hd-wallet-api in Frameworks */ = {isa = PBXBuildFile; productRef = 6E0F0F472DF6B382002035B7 /* x-hd-wallet-api */; };
 		6E0F0F4A2DF6B382002035B7 /* deterministicP256-swift in Frameworks */ = {isa = PBXBuildFile; productRef = 6E0F0F492DF6B382002035B7 /* deterministicP256-swift */; };
 		6E97FCC52DC0CD35006224B5 /* x-hd-wallet-api in Frameworks */ = {isa = PBXBuildFile; productRef = 6E97FCC42DC0CD35006224B5 /* x-hd-wallet-api */; };
+		6EA62CEE2E1F0AD700C80BF0 /* LiquidAuthSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA62CB32E1F079F00C80BF0 /* LiquidAuthSDK */; };
+		6EA62D0D2E1F0AF300C80BF0 /* LiquidAuthSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA62D0C2E1F0AF300C80BF0 /* LiquidAuthSDK */; };
 		6EB1BFFC2DE6105800D2CD0F /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EB1BFFB2DE6105700D2CD0F /* AuthenticationServices.framework */; };
 		6EB1C0072DE6105800D2CD0F /* AutofillCredentialExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6EB1BFFA2DE6105700D2CD0F /* AutofillCredentialExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		6EE5379A2DAE75340032EC12 /* SwiftCBOR in Frameworks */ = {isa = PBXBuildFile; productRef = 6EE537992DAE75340032EC12 /* SwiftCBOR */; };
-		6EE537D92DAFA7AE0032EC12 /* WebRTC in Frameworks */ = {isa = PBXBuildFile; productRef = 6EE537D82DAFA7AE0032EC12 /* WebRTC */; };
 		6EE537E92DBD631D0032EC12 /* MnemonicSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6EE537E82DBD631D0032EC12 /* MnemonicSwift */; };
-		6EE537F32DBD64D80032EC12 /* Base32 in Frameworks */ = {isa = PBXBuildFile; productRef = 6EE537F22DBD64D80032EC12 /* Base32 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +39,7 @@
 			containerPortal = 6E68E6842DA924920087CB6D /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 6EB1BFF92DE6105700D2CD0F;
-			remoteInfo = "AutofillCredentialExtension";
+			remoteInfo = AutofillCredentialExtension;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -64,10 +59,10 @@
 
 /* Begin PBXFileReference section */
 		6E28F8732E1E982500A725C5 /* LiquidAuthSDK */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = LiquidAuthSDK; sourceTree = "<group>"; };
-		6E68E68C2DA924920087CB6D /* liquid-auth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "liquid-auth.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E68E68C2DA924920087CB6D /* liquid-auth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "liquid-auth.app"; path = "liquid-auth-ios-example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E68E69C2DA924940087CB6D /* liquid-auth-ios-exampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "liquid-auth-ios-exampleTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E68E6A62DA924940087CB6D /* liquid-auth-ios-exampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "liquid-auth-ios-exampleUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6EB1BFFA2DE6105700D2CD0F /* AutofillCredentialExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "AutofillCredentialExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6EB1BFFA2DE6105700D2CD0F /* AutofillCredentialExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AutofillCredentialExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		6EB1BFFB2DE6105700D2CD0F /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -102,7 +97,7 @@
 			exceptions = (
 				6EB1C0082DE6105800D2CD0F /* Exceptions for "AutofillCredentialExtension" folder in "AutofillCredentialExtension" target */,
 			);
-			path = "AutofillCredentialExtension";
+			path = AutofillCredentialExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -112,12 +107,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6EE537F32DBD64D80032EC12 /* Base32 in Frameworks */,
+				6EA62CEE2E1F0AD700C80BF0 /* LiquidAuthSDK in Frameworks */,
 				6E97FCC52DC0CD35006224B5 /* x-hd-wallet-api in Frameworks */,
-				6E0A05A02DCA3132004A74E2 /* SocketIO in Frameworks */,
-				6EE5379A2DAE75340032EC12 /* SwiftCBOR in Frameworks */,
 				6E0A054F2DC77745004A74E2 /* deterministicP256-swift in Frameworks */,
-				6EE537D92DAFA7AE0032EC12 /* WebRTC in Frameworks */,
 				6EE537E92DBD631D0032EC12 /* MnemonicSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,12 +132,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E0F0F462DF6B382002035B7 /* Base32 in Frameworks */,
 				6E0F0F482DF6B382002035B7 /* x-hd-wallet-api in Frameworks */,
+				6EA62D0D2E1F0AF300C80BF0 /* LiquidAuthSDK in Frameworks */,
 				6E0F0F442DF6B382002035B7 /* MnemonicSwift in Frameworks */,
 				6E0F0F4A2DF6B382002035B7 /* deterministicP256-swift in Frameworks */,
-				6E0F0F402DF6B382002035B7 /* SwiftCBOR in Frameworks */,
-				6E0F0F422DF6B382002035B7 /* WebRTC in Frameworks */,
 				6EB1BFFC2DE6105800D2CD0F /* AuthenticationServices.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,13 +197,10 @@
 			);
 			name = "liquid-auth-ios-example";
 			packageProductDependencies = (
-				6EE537992DAE75340032EC12 /* SwiftCBOR */,
-				6EE537D82DAFA7AE0032EC12 /* WebRTC */,
 				6EE537E82DBD631D0032EC12 /* MnemonicSwift */,
-				6EE537F22DBD64D80032EC12 /* Base32 */,
 				6E97FCC42DC0CD35006224B5 /* x-hd-wallet-api */,
 				6E0A054E2DC77745004A74E2 /* deterministicP256-swift */,
-				6E0A059F2DCA3132004A74E2 /* SocketIO */,
+				6EA62CB32E1F079F00C80BF0 /* LiquidAuthSDK */,
 			);
 			productName = "liquid-auth-ios-example";
 			productReference = 6E68E68C2DA924920087CB6D /* liquid-auth.app */;
@@ -280,16 +267,14 @@
 			fileSystemSynchronizedGroups = (
 				6EB1BFFD2DE6105800D2CD0F /* AutofillCredentialExtension */,
 			);
-			name = "AutofillCredentialExtension";
+			name = AutofillCredentialExtension;
 			packageProductDependencies = (
-				6E0F0F3F2DF6B382002035B7 /* SwiftCBOR */,
-				6E0F0F412DF6B382002035B7 /* WebRTC */,
 				6E0F0F432DF6B382002035B7 /* MnemonicSwift */,
-				6E0F0F452DF6B382002035B7 /* Base32 */,
 				6E0F0F472DF6B382002035B7 /* x-hd-wallet-api */,
 				6E0F0F492DF6B382002035B7 /* deterministicP256-swift */,
+				6EA62D0C2E1F0AF300C80BF0 /* LiquidAuthSDK */,
 			);
-			productName = "AutofillCredentialExtension";
+			productName = AutofillCredentialExtension;
 			productReference = 6EB1BFFA2DE6105700D2CD0F /* AutofillCredentialExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
@@ -329,13 +314,10 @@
 			mainGroup = 6E68E6832DA924920087CB6D;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				6EE537972DAE74A10032EC12 /* XCRemoteSwiftPackageReference "SwiftCBOR" */,
-				6EE537D72DAFA7540032EC12 /* XCRemoteSwiftPackageReference "WebRTC" */,
 				6EE537E72DBD631D0032EC12 /* XCRemoteSwiftPackageReference "MnemonicSwift" */,
-				6EE537F12DBD64D80032EC12 /* XCRemoteSwiftPackageReference "Base32" */,
 				6ECF13E52DBEBA73006E0BE0 /* XCRemoteSwiftPackageReference "xHD-Wallet-API-swift" */,
 				6E0A054D2DC77745004A74E2 /* XCRemoteSwiftPackageReference "deterministic-P256-swift" */,
-				6E0A059E2DCA3132004A74E2 /* XCRemoteSwiftPackageReference "socket" */,
+				6EA62CB22E1F079F00C80BF0 /* XCRemoteSwiftPackageReference "liquid-auth-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6E68E68D2DA924920087CB6D /* Products */;
@@ -557,14 +539,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_ENTITLEMENTS = "liquid-auth/liquid-auth.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "liquid-auth-ios-example/liquid-auth-ios-example.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"liquid-auth/Preview Content\"";
 				DEVELOPMENT_TEAM = 7U5G65G3QT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "AutofillCredentialExtension";
+				INFOPLIST_KEY_CFBundleDisplayName = AutofillCredentialExtension;
 				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs access to your camera to scan QR codes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -589,14 +571,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
-				CODE_SIGN_ENTITLEMENTS = "liquid-auth/liquid-auth.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "liquid-auth-ios-example/liquid-auth-ios-example.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"liquid-auth/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"liquid-auth-ios-example/Preview Content\"";
 				DEVELOPMENT_TEAM = 7U5G65G3QT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "AutofillCredentialExtension";
+				INFOPLIST_KEY_CFBundleDisplayName = AutofillCredentialExtension;
 				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs access to your camera to scan QR codes.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -687,13 +669,13 @@
 		6EB1C00A2DE6105800D2CD0F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "AutofillCredentialExtension/Liquid_Auth.entitlements";
+				CODE_SIGN_ENTITLEMENTS = AutofillCredentialExtension/AutofillCredentialExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7U5G65G3QT;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "AutofillCredentialExtension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "AutofillCredentialExtension";
+				INFOPLIST_FILE = AutofillCredentialExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AutofillCredentialExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -714,13 +696,13 @@
 		6EB1C00B2DE6105800D2CD0F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "AutofillCredentialExtension/Liquid_Auth.entitlements";
+				CODE_SIGN_ENTITLEMENTS = AutofillCredentialExtension/AutofillCredentialExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7U5G65G3QT;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "AutofillCredentialExtension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "AutofillCredentialExtension";
+				INFOPLIST_FILE = AutofillCredentialExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AutofillCredentialExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -797,11 +779,11 @@
 				kind = branch;
 			};
 		};
-		6E0A059E2DCA3132004A74E2 /* XCRemoteSwiftPackageReference "socket" */ = {
+		6EA62CB22E1F079F00C80BF0 /* XCRemoteSwiftPackageReference "liquid-auth-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
+			repositoryURL = "https://github.com/algorandfoundation/liquid-auth-ios/";
 			requirement = {
-				branch = master;
+				branch = "refactor-into-library";
 				kind = branch;
 			};
 		};
@@ -813,36 +795,12 @@
 				kind = branch;
 			};
 		};
-		6EE537972DAE74A10032EC12 /* XCRemoteSwiftPackageReference "SwiftCBOR" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/valpackett/SwiftCBOR";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		6EE537D72DAFA7540032EC12 /* XCRemoteSwiftPackageReference "WebRTC" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/stasel/WebRTC";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 135.0.0;
-			};
-		};
 		6EE537E72DBD631D0032EC12 /* XCRemoteSwiftPackageReference "MnemonicSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Electric-Coin-Company/MnemonicSwift/";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.2.5;
-			};
-		};
-		6EE537F12DBD64D80032EC12 /* XCRemoteSwiftPackageReference "Base32" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/norio-nomura/Base32";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -853,30 +811,10 @@
 			package = 6E0A054D2DC77745004A74E2 /* XCRemoteSwiftPackageReference "deterministic-P256-swift" */;
 			productName = "deterministicP256-swift";
 		};
-		6E0A059F2DCA3132004A74E2 /* SocketIO */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6E0A059E2DCA3132004A74E2 /* XCRemoteSwiftPackageReference "socket" */;
-			productName = SocketIO;
-		};
-		6E0F0F3F2DF6B382002035B7 /* SwiftCBOR */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6EE537972DAE74A10032EC12 /* XCRemoteSwiftPackageReference "SwiftCBOR" */;
-			productName = SwiftCBOR;
-		};
-		6E0F0F412DF6B382002035B7 /* WebRTC */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6EE537D72DAFA7540032EC12 /* XCRemoteSwiftPackageReference "WebRTC" */;
-			productName = WebRTC;
-		};
 		6E0F0F432DF6B382002035B7 /* MnemonicSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6EE537E72DBD631D0032EC12 /* XCRemoteSwiftPackageReference "MnemonicSwift" */;
 			productName = MnemonicSwift;
-		};
-		6E0F0F452DF6B382002035B7 /* Base32 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6EE537F12DBD64D80032EC12 /* XCRemoteSwiftPackageReference "Base32" */;
-			productName = Base32;
 		};
 		6E0F0F472DF6B382002035B7 /* x-hd-wallet-api */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -893,25 +831,20 @@
 			package = 6ECF13E52DBEBA73006E0BE0 /* XCRemoteSwiftPackageReference "xHD-Wallet-API-swift" */;
 			productName = "x-hd-wallet-api";
 		};
-		6EE537992DAE75340032EC12 /* SwiftCBOR */ = {
+		6EA62CB32E1F079F00C80BF0 /* LiquidAuthSDK */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6EE537972DAE74A10032EC12 /* XCRemoteSwiftPackageReference "SwiftCBOR" */;
-			productName = SwiftCBOR;
+			package = 6EA62CB22E1F079F00C80BF0 /* XCRemoteSwiftPackageReference "liquid-auth-ios" */;
+			productName = LiquidAuthSDK;
 		};
-		6EE537D82DAFA7AE0032EC12 /* WebRTC */ = {
+		6EA62D0C2E1F0AF300C80BF0 /* LiquidAuthSDK */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6EE537D72DAFA7540032EC12 /* XCRemoteSwiftPackageReference "WebRTC" */;
-			productName = WebRTC;
+			package = 6EA62CB22E1F079F00C80BF0 /* XCRemoteSwiftPackageReference "liquid-auth-ios" */;
+			productName = LiquidAuthSDK;
 		};
 		6EE537E82DBD631D0032EC12 /* MnemonicSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6EE537E72DBD631D0032EC12 /* XCRemoteSwiftPackageReference "MnemonicSwift" */;
 			productName = MnemonicSwift;
-		};
-		6EE537F22DBD64D80032EC12 /* Base32 */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6EE537F12DBD64D80032EC12 /* XCRemoteSwiftPackageReference "Base32" */;
-			productName = Base32;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

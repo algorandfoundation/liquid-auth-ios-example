@@ -4,10 +4,10 @@ import CryptoKit
 import deterministicP256_swift
 import LocalAuthentication
 import MnemonicSwift
-import SwiftCBOR
 import SwiftUI
-import WebRTC
 import x_hd_wallet_api
+
+import LiquidAuthSDK
 
 import Foundation
 
@@ -137,57 +137,8 @@ struct ContentView: View {
 
         if code.starts(with: "FIDO:/") {
             // Decode the FIDO URI
-
-            // We need to look into hybrid transport for iOS to understand how to properly
-            // handle the FIDO URI. The current implementation is a placeholder.
-            scannedMessage = "FIDO URI detected. Processing..."
-            errorMessage = nil
-
-            // Attempt to open the URI using UIApplication
-
             /*
-              guard let url = URL(string: code) else {
-                 errorMessage = "Invalid URI format."
-                 scannedMessage = nil
-                 return
-             }
-
-             UIApplication.shared.open(url, options: [:]) { success in
-                     if success {
-                         scannedMessage = "Opened URI: \(code)"
-                         errorMessage = nil
-                     } else {
-                         errorMessage = "Failed to open URI: \(code)"
-                         scannedMessage = nil
-                     }
-                 }
-             */
-
-            // This is how to decode the FIDO URI and extract the contents
-            /*
-              if let fidoRequest = FIDOHandler.decodeFIDOURI(code) {
-                 // Determine the flow type
-                 scannedMessage = "\(fidoRequest.flowType) flow detected. Ready to proceed."
-
-                 // Log the extracted fields
-                 Logger.debug("Public Key: \(fidoRequest.publicKey)")
-                 Logger.debug("QR Secret: \(fidoRequest.qrSecret)")
-                 Logger.debug("Tunnel Server Count: \(fidoRequest.tunnelServerCount)")
-                 if let currentTime = fidoRequest.currentTime {
-                     Logger.debug("Current Time: \(currentTime)")
-                 }
-                 if let stateAssisted = fidoRequest.stateAssisted {
-                     Logger.debug("State-Assisted Transactions: \(stateAssisted)")
-                 }
-                 if let hint = fidoRequest.hint {
-                     Logger.debug("Hint: \(hint)")
-                 }
-
-                 errorMessage = nil
-             } else {
-                 errorMessage = "Failed to process FIDO URI."
-                 scannedMessage = nil
-             }
+            // Should call the "Save Passkey" API that the camera app calls
              */
         } else if code.starts(with: "liquid://") {
             // Handle Liquid Auth URI

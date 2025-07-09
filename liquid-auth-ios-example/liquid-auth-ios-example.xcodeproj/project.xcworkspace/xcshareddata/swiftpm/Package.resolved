@@ -1,5 +1,5 @@
 {
-  "originHash" : "9068f382889ca9c561315121a34e24561560e2c6ac3626bb40b02c421ec590ec",
+  "originHash" : "20841c05d6ed2a0f5f503aac64f569fa358cc215c208f9c90f8c9672b47f5647",
   "pins" : [
     {
       "identity" : "base32",
@@ -56,6 +56,15 @@
       }
     },
     {
+      "identity" : "liquid-auth-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/algorandfoundation/liquid-auth-ios/",
+      "state" : {
+        "branch" : "refactor-into-library",
+        "revision" : "b68ba2473285ed11691efa1781371cfb507aea5a"
+      }
+    },
+    {
       "identity" : "messagepack.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/a2/MessagePack.swift.git",
@@ -85,9 +94,8 @@
     {
       "identity" : "socket.io-client-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/socketio/socket.io-client-swift",
+      "location" : "https://github.com/socketio/socket.io-client-swift.git",
       "state" : {
-        "branch" : "master",
         "revision" : "42da871d9369f290d6ec4930636c40672143905b"
       }
     },
@@ -157,7 +165,7 @@
     {
       "identity" : "swiftcbor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/valpackett/SwiftCBOR",
+      "location" : "https://github.com/valpackett/SwiftCBOR.git",
       "state" : {
         "branch" : "master",
         "revision" : "ea5ece79b0efde241495bfaa74eccceeffc382bc"
@@ -195,8 +203,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/stasel/WebRTC",
       "state" : {
-        "revision" : "e15b6945119ac4702b2ff6f770823341e1366ec8",
-        "version" : "135.0.0"
+        "revision" : "820d216010b6bb5695139852ec6740edd6f790ff",
+        "version" : "138.0.0"
       }
     },
     {
