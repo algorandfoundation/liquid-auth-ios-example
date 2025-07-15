@@ -1,10 +1,10 @@
 {
-  "originHash" : "20841c05d6ed2a0f5f503aac64f569fa358cc215c208f9c90f8c9672b47f5647",
+  "originHash" : "4c120e5cf934a826938b145084fa80dae41eb2fedf543fc62938ac3b69cf1e54",
   "pins" : [
     {
       "identity" : "base32",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/norio-nomura/Base32",
+      "location" : "https://github.com/norio-nomura/Base32.git",
       "state" : {
         "revision" : "c4bc0a49689999ae2c7c778f3830a6a6e694efb8",
         "version" : "0.9.0"
@@ -61,7 +61,7 @@
       "location" : "https://github.com/algorandfoundation/liquid-auth-ios/",
       "state" : {
         "branch" : "refactor-into-library",
-        "revision" : "b68ba2473285ed11691efa1781371cfb507aea5a"
+        "revision" : "c0d1ebb71778808e705624d161e904b33ba027bc"
       }
     },
     {
@@ -165,7 +165,7 @@
     {
       "identity" : "swiftcbor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/valpackett/SwiftCBOR.git",
+      "location" : "https://github.com/valpackett/SwiftCBOR",
       "state" : {
         "branch" : "master",
         "revision" : "ea5ece79b0efde241495bfaa74eccceeffc382bc"
@@ -201,7 +201,7 @@
     {
       "identity" : "webrtc",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/stasel/WebRTC",
+      "location" : "https://github.com/stasel/WebRTC.git",
       "state" : {
         "revision" : "820d216010b6bb5695139852ec6740edd6f790ff",
         "version" : "138.0.0"

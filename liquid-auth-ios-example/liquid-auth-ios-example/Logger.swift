@@ -2,8 +2,9 @@ import Foundation
 
 enum LogLevel: Int {
     case error = 0
-    case info = 1
-    case debug = 2
+    case warning = 1
+    case info = 2
+    case debug = 3
 }
 
 public class Logger {
@@ -12,6 +13,12 @@ public class Logger {
     static func error(_ message: String) {
         if currentLevel.rawValue >= LogLevel.error.rawValue {
             print("❌ [ERROR] \(message)")
+        }
+    }
+
+    static func warning(_ message: String) {
+        if currentLevel.rawValue >= LogLevel.warning.rawValue {
+            print("⚠️ [WARNING] \(message)")
         }
     }
 

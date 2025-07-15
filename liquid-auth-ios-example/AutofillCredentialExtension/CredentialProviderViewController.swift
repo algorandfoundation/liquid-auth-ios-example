@@ -1,12 +1,23 @@
 import AuthenticationServices
 import CryptoKit
 import deterministicP256_swift
+import LiquidAuthSDK
 import LocalAuthentication
 import MnemonicSwift
 import SwiftCBOR
 import UIKit
 import x_hd_wallet_api
-import LiquidAuthSDK
+
+/**
+ * IMPORTANT: AutoFill Credential Extension
+ *
+ * This extension handles standard WebAuthn/Passkey flows when the user:
+ * - Uses Safari or other apps that request passkeys
+ * - Sees this wallet appear in the system's passkey picker
+ *
+ * It uses LiquidAuthSDK for shared WebAuthn utilities like AuthenticatorData,
+ * but doesn't use the custom LiquidAuth signaling protocol (no QR codes, no P2P).
+ */
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
     private var tableDataSource: UITableViewDataSource?
@@ -62,7 +73,7 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
 
                 // Authenticator data
                 let rpIdHash = Utility.hashSHA256(origin.data(using: .utf8)!)
-                let authenticatorData = AuthenticatorData.assertion(
+                let authenticatorData = LiquidAuthSDK.AuthenticatorData.assertion(
                     rpIdHash: rpIdHash,
                     userPresent: true,
                     userVerified: true,
@@ -477,7 +488,8 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     }
 
     private func getWalletInfo(origin: String) throws -> WalletInfo {
-        let phrase = "salon zoo engage submit smile frost later decide wing sight chaos renew lizard rely canal coral scene hobby scare step bus leaf tobacco slice"
+        // Use the same mnemonic as the main app for consistency
+        let phrase = "youth clog use limit else hub select cause digital oven stand bike alarm ring phone remain trigger essay royal tortoise bless goose forum reflect"
         let seed = try Mnemonic.deterministicSeedString(from: phrase)
         guard let ed25519Wallet = XHDWalletAPI(seed: seed) else {
             throw NSError(domain: "Wallet creation failed", code: -1, userInfo: nil)
