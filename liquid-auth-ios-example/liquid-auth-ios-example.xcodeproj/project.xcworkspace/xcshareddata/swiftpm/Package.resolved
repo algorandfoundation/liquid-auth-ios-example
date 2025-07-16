@@ -1,5 +1,5 @@
 {
-  "originHash" : "4c120e5cf934a826938b145084fa80dae41eb2fedf543fc62938ac3b69cf1e54",
+  "originHash" : "54b4d35f5dce1f51c137607a69d1dfb84db9ddea2b83908d57a76042a7522d7a",
   "pins" : [
     {
       "identity" : "base32",
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/algorandfoundation/liquid-auth-ios/",
       "state" : {
-        "branch" : "refactor-into-library",
-        "revision" : "c0d1ebb71778808e705624d161e904b33ba027bc"
+        "branch" : "main",
+        "revision" : "f1357f05e6f674bcc738ce21febfa4fd1f82023f"
       }
     },
     {

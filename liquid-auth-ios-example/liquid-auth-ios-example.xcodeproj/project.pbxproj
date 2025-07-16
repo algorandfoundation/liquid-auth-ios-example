@@ -18,6 +18,8 @@
 		6EE537E92DBD631D0032EC12 /* MnemonicSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6EE537E82DBD631D0032EC12 /* MnemonicSwift */; };
 		6EFCAC752E2649AA0010B46B /* LiquidAuthSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 6EFCAC742E2649AA0010B46B /* LiquidAuthSDK */; };
 		6EFCAC772E2649BA0010B46B /* LiquidAuthSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 6EFCAC762E2649BA0010B46B /* LiquidAuthSDK */; };
+		6EFCAC802E2737610010B46B /* Base32 in Frameworks */ = {isa = PBXBuildFile; productRef = 6EFCAC7F2E2737610010B46B /* Base32 */; };
+		6EFCAC822E2737680010B46B /* Base32 in Frameworks */ = {isa = PBXBuildFile; productRef = 6EFCAC812E2737680010B46B /* Base32 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +112,7 @@
 			files = (
 				6E97FCC52DC0CD35006224B5 /* x-hd-wallet-api in Frameworks */,
 				6EFCAC752E2649AA0010B46B /* LiquidAuthSDK in Frameworks */,
+				6EFCAC802E2737610010B46B /* Base32 in Frameworks */,
 				6EA62D392E20702E00C80BF0 /* SwiftCBOR in Frameworks */,
 				6E0A054F2DC77745004A74E2 /* deterministicP256-swift in Frameworks */,
 				6EE537E92DBD631D0032EC12 /* MnemonicSwift in Frameworks */,
@@ -136,6 +139,7 @@
 			files = (
 				6E0F0F482DF6B382002035B7 /* x-hd-wallet-api in Frameworks */,
 				6EFCAC772E2649BA0010B46B /* LiquidAuthSDK in Frameworks */,
+				6EFCAC822E2737680010B46B /* Base32 in Frameworks */,
 				6E0F0F442DF6B382002035B7 /* MnemonicSwift in Frameworks */,
 				6E0F0F4A2DF6B382002035B7 /* deterministicP256-swift in Frameworks */,
 				6EB1BFFC2DE6105800D2CD0F /* AuthenticationServices.framework in Frameworks */,
@@ -204,6 +208,7 @@
 				6E0A054E2DC77745004A74E2 /* deterministicP256-swift */,
 				6EA62D382E20702E00C80BF0 /* SwiftCBOR */,
 				6EFCAC742E2649AA0010B46B /* LiquidAuthSDK */,
+				6EFCAC7F2E2737610010B46B /* Base32 */,
 			);
 			productName = "liquid-auth-ios-example";
 			productReference = 6E68E68C2DA924920087CB6D /* liquid-auth-ios-example.app */;
@@ -276,6 +281,7 @@
 				6E0F0F472DF6B382002035B7 /* x-hd-wallet-api */,
 				6E0F0F492DF6B382002035B7 /* deterministicP256-swift */,
 				6EFCAC762E2649BA0010B46B /* LiquidAuthSDK */,
+				6EFCAC812E2737680010B46B /* Base32 */,
 			);
 			productName = AutofillCredentialExtension;
 			productReference = 6EB1BFFA2DE6105700D2CD0F /* AutofillCredentialExtension.appex */;
@@ -322,6 +328,7 @@
 				6E0A054D2DC77745004A74E2 /* XCRemoteSwiftPackageReference "deterministic-P256-swift" */,
 				6EA62D372E20702E00C80BF0 /* XCRemoteSwiftPackageReference "SwiftCBOR" */,
 				6EFCAC732E2649AA0010B46B /* XCRemoteSwiftPackageReference "liquid-auth-ios" */,
+				6EFCAC7E2E2737540010B46B /* XCRemoteSwiftPackageReference "Base32" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 6E68E68D2DA924920087CB6D /* Products */;
@@ -811,8 +818,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/algorandfoundation/liquid-auth-ios/";
 			requirement = {
-				branch = "refactor-into-library";
+				branch = main;
 				kind = branch;
+			};
+		};
+		6EFCAC7E2E2737540010B46B /* XCRemoteSwiftPackageReference "Base32" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/norio-nomura/Base32";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -862,6 +877,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6EFCAC732E2649AA0010B46B /* XCRemoteSwiftPackageReference "liquid-auth-ios" */;
 			productName = LiquidAuthSDK;
+		};
+		6EFCAC7F2E2737610010B46B /* Base32 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EFCAC7E2E2737540010B46B /* XCRemoteSwiftPackageReference "Base32" */;
+			productName = Base32;
+		};
+		6EFCAC812E2737680010B46B /* Base32 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EFCAC7E2E2737540010B46B /* XCRemoteSwiftPackageReference "Base32" */;
+			productName = Base32;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
