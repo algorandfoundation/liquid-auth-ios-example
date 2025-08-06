@@ -1,5 +1,5 @@
 {
-  "originHash" : "54b4d35f5dce1f51c137607a69d1dfb84db9ddea2b83908d57a76042a7522d7a",
+  "originHash" : "4493d26f6013521b5864420f49e32b8ec28d11204284a426f875149ac7f517c0",
   "pins" : [
     {
       "identity" : "base32",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/attaswift/BigInt.git",
       "state" : {
-        "revision" : "114343a705df4725dfe7ab8a2a326b8883cfd79c",
-        "version" : "5.5.1"
+        "revision" : "e07e00fa1fd435143a2dcf8b7eec9a7710b2fdfe",
+        "version" : "5.7.0"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/krzyzanowskim/CryptoSwift.git",
       "state" : {
-        "revision" : "729e01bc9b9dab466ac85f21fb9ee2bc1c61b258",
-        "version" : "1.8.4"
+        "revision" : "e45a26384239e028ec87fbcc788f513b67e10d8f",
+        "version" : "1.9.0"
       }
     },
     {
@@ -61,7 +61,7 @@
       "location" : "https://github.com/algorandfoundation/liquid-auth-ios/",
       "state" : {
         "branch" : "main",
-        "revision" : "f1357f05e6f674bcc738ce21febfa4fd1f82023f"
+        "revision" : "c6ffbc20e00f55f9b80fd3528cd29f26e613c21e"
       }
     },
     {
@@ -104,8 +104,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jpsim/SourceKitten.git",
       "state" : {
-        "revision" : "eb6656ed26bdef967ad8d07c27e2eab34dc582f2",
-        "version" : "0.37.0"
+        "revision" : "453f75b8a3bb2c3596c0d2dd422c289788233a22",
+        "version" : "0.37.1"
       }
     },
     {
@@ -131,8 +131,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-argument-parser.git",
       "state" : {
-        "revision" : "41982a3656a71c768319979febd796c6fd111d5c",
-        "version" : "1.5.0"
+        "revision" : "309a47b2b1d9b5e991f36961c983ecec72275be3",
+        "version" : "1.6.1"
       }
     },
     {
@@ -210,10 +210,10 @@
     {
       "identity" : "xhd-wallet-api-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/algorandfoundation/xHD-Wallet-API-swift/",
+      "location" : "https://github.com/algorandfoundation/xHD-Wallet-API-swift",
       "state" : {
-        "branch" : "temp-branch-rawsign",
-        "revision" : "e0b1553c43957de7fa0b3161a3d19ac1655cadca"
+        "branch" : "main",
+        "revision" : "43d102eb022965a901ccbe3b763ab6d11d69c36b"
       }
     },
     {
@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/jpsim/Yams.git",
       "state" : {
-        "revision" : "b4b8042411dc7bbb696300a34a4bf3ba1b7ad19b",
-        "version" : "5.3.1"
+        "revision" : "3d6871d5b4a5cd519adf233fbb576e0a2af71c17",
+        "version" : "5.4.0"
       }
     }
   ],

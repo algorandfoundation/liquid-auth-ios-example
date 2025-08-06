@@ -1,5 +1,5 @@
 //
-//  liquid_auth_exampleApp.swift
+//  liquid_auth_ios_exampleApp.swift
 //  liquid-auth-ios-example
 //
 //  Created by Algorand Foundation on 2025-04-11.

@@ -1,8 +1,7 @@
 import AuthenticationServices
 import AVFoundation
+import LiquidAuthSDK
 import SwiftUI
-
-import LiquidAuthSDK // When this becomes a separate package
 
 struct ContentView: View {
     @State private var isScanning = false
@@ -92,7 +91,57 @@ struct ContentView: View {
                     startProcessing {
                         Task {
                             if let origin = actionSheetOrigin, let requestId = actionSheetRequestId {
-                                await register(origin: origin, requestId: requestId)
+                                defer { isLoading = false }
+                                do {
+                                    let state = await ASCredentialIdentityStore.shared.state()
+                                    if !state.isEnabled {
+                                        Logger.warning("AutoFill is not enabled")
+                                        DispatchQueue.main.async {
+                                            self.scannedMessage = nil
+                                            self.errorMessage = "AutoFill Passwords & Passkeys is not enabled for Liquid Auth. Please enable it in Settings > General > AutoFill & Passwords."
+                                        }
+                                        return
+                                    }
+                                    let userVerified = await requireUserVerification(reason: "Authenticate to register with Liquid Auth")
+                                    guard userVerified else {
+                                        Logger.error("❌ User verification failed")
+                                        DispatchQueue.main.async {
+                                            self.scannedMessage = nil
+                                            self.errorMessage = "User verification is required for this action"
+                                        }
+                                        return
+                                    }
+                                    let walletInfo = try getWalletInfo(origin: origin)
+                                    let challengeSigner = walletInfo.createChallengeSigner()
+                                    let messageHandler = walletInfo.createMessageHandler()
+                                    let deviceInfo = getDeviceInformation()
+                                    let client = LiquidAuthClient()
+                                    let result = try await client.register(
+                                        origin: origin,
+                                        requestId: requestId,
+                                        algorandAddress: walletInfo.address,
+                                        challengeSigner: challengeSigner,
+                                        p256KeyPair: walletInfo.p256KeyPair,
+                                        messageHandler: messageHandler,
+                                        userAgent: deviceInfo.userAgent,
+                                        device: deviceInfo.device
+                                    )
+                                    DispatchQueue.main.async {
+                                        if result.success {
+                                            self.scannedMessage = "Registration completed successfully."
+                                            self.errorMessage = nil
+                                        } else {
+                                            self.scannedMessage = nil
+                                            self.errorMessage = result.errorMessage
+                                        }
+                                    }
+                                } catch {
+                                    Logger.error("❌ Error in LiquidAuth register: \(error)")
+                                    DispatchQueue.main.async {
+                                        self.errorMessage = "Failed to complete Liquid Auth registration: \(error.localizedDescription)"
+                                        self.scannedMessage = nil
+                                    }
+                                }
                             }
                         }
                     }
@@ -101,7 +150,48 @@ struct ContentView: View {
                     startProcessing {
                         Task {
                             if let origin = actionSheetOrigin, let requestId = actionSheetRequestId {
-                                await authenticate(origin: origin, requestId: requestId)
+                                defer { isLoading = false }
+                                do {
+                                    let userVerified = await requireUserVerification(reason: "Authenticate to sign in with Liquid Auth")
+                                    guard userVerified else {
+                                        Logger.error("❌ User verification failed")
+                                        DispatchQueue.main.async {
+                                            self.scannedMessage = nil
+                                            self.errorMessage = "User verification is required for this action"
+                                        }
+                                        return
+                                    }
+                                    let walletInfo = try getWalletInfo(origin: origin)
+                                    let challengeSigner = walletInfo.createChallengeSigner()
+                                    let messageHandler = walletInfo.createMessageHandler()
+                                    let deviceInfo = getDeviceInformation()
+                                    let client = LiquidAuthClient()
+                                    let result = try await client.authenticate(
+                                        origin: origin,
+                                        requestId: requestId,
+                                        algorandAddress: walletInfo.address,
+                                        challengeSigner: challengeSigner,
+                                        p256KeyPair: walletInfo.p256KeyPair,
+                                        messageHandler: messageHandler,
+                                        userAgent: deviceInfo.userAgent,
+                                        device: deviceInfo.device
+                                    )
+                                    DispatchQueue.main.async {
+                                        if result.success {
+                                            self.scannedMessage = "Authentication completed successfully."
+                                            self.errorMessage = nil
+                                        } else {
+                                            self.scannedMessage = nil
+                                            self.errorMessage = result.errorMessage
+                                        }
+                                    }
+                                } catch {
+                                    Logger.error("❌ Error in LiquidAuth authenticate: \(error)")
+                                    DispatchQueue.main.async {
+                                        self.errorMessage = "Failed to complete Liquid Auth authentication: \(error.localizedDescription)"
+                                        self.scannedMessage = nil
+                                    }
+                                }
                             }
                         }
                     }
@@ -189,187 +279,6 @@ struct ContentView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             isLoading = true
             action()
-        }
-    }
-
-    private func register(origin: String, requestId: String) async {
-        defer {
-            isLoading = false
-        }
-
-        do {
-            Logger.debug("🚀 === REGISTRATION FLOW STARTED ===")
-            Logger.debug("Origin: \(origin)")
-            Logger.debug("Request ID: \(requestId)")
-
-            // Check AutoFill state before proceeding
-            let state = await ASCredentialIdentityStore.shared.state()
-            if !state.isEnabled {
-                Logger.warning("AutoFill is not enabled")
-                DispatchQueue.main.async {
-                    self.scannedMessage = nil
-                    self.errorMessage = "AutoFill Passwords & Passkeys is not enabled for Liquid Auth. Please enable it in Settings > General > AutoFill & Passwords."
-                }
-                return
-            }
-            Logger.debug("✅ AutoFill is enabled")
-
-            // REQUEST USER VERIFICATION BEFORE STARTING REGISTRATION
-            Logger.debug("🔐 Requesting user verification before registration")
-            let userVerified = await requireUserVerification(reason: "Authenticate to register with Liquid Auth")
-            guard userVerified else {
-                Logger.error("❌ User verification failed for registration")
-                DispatchQueue.main.async {
-                    self.scannedMessage = nil
-                    self.errorMessage = "User verification is required for registration"
-                }
-                return
-            }
-            Logger.debug("✅ User verification successful for registration")
-
-            Logger.debug("🔑 Getting wallet information...")
-            // Get wallet information
-            let walletInfo = try getWalletInfo(origin: origin)
-            Logger.debug("✅ Wallet info retrieved - Address: \(walletInfo.address)")
-            Logger.debug("🔑 P256 KeyPair public key: \(walletInfo.p256KeyPair.publicKey.rawRepresentation.map { String(format: "%02hhx", $0) }.joined())")
-            Logger.debug("🔑 P256 KeyPair public key size: \(walletInfo.p256KeyPair.publicKey.rawRepresentation.count) bytes")
-            Logger.debug("🏢 Origin used for key derivation: \(origin)")
-
-            // Create protocol implementations for this wallet
-            Logger.debug("🏗️ Creating protocol implementations...")
-            let challengeSigner = walletInfo.createChallengeSigner()
-            let messageHandler = walletInfo.createMessageHandler()
-            Logger.debug("✅ Protocol implementations created")
-
-            // Create LiquidAuth client
-            Logger.debug("📱 Creating LiquidAuth client...")
-            let client = LiquidAuthClient()
-            Logger.debug("✅ LiquidAuth client created")
-
-            // Perform registration using the SDK
-            // Let the SDK handle WebAuthn user verification internally
-            Logger.debug("🎯 Calling SDK register method...")
-            Logger.debug("📋 SDK Parameters:")
-            Logger.debug("   - Origin: \(origin)")
-            Logger.debug("   - RequestId: \(requestId)")
-            Logger.debug("   - AlgorandAddress: \(walletInfo.address)")
-            Logger.debug("   - P256 Public Key: \(walletInfo.p256KeyPair.publicKey.rawRepresentation.prefix(8).map { String(format: "%02hhx", $0) }.joined())...")
-
-            let deviceInfo = getDeviceInformation()
-
-            let result = try await client.register(
-                origin: origin,
-                requestId: requestId,
-                algorandAddress: walletInfo.address,
-                challengeSigner: challengeSigner,
-                p256KeyPair: walletInfo.p256KeyPair,
-                messageHandler: messageHandler,
-                userAgent: deviceInfo.userAgent,
-                device: deviceInfo.device
-            )
-            Logger.debug("📋 SDK register method completed")
-
-            DispatchQueue.main.async {
-                if result.success {
-                    Logger.debug("✅ Registration completed successfully")
-                    self.scannedMessage = "Registration completed successfully."
-                    self.errorMessage = nil
-                } else {
-                    Logger.error("❌ Registration failed: \(result.errorMessage ?? "Unknown error")")
-                    self.scannedMessage = nil
-                    self.errorMessage = result.errorMessage
-                }
-            }
-            Logger.debug("🏁 === REGISTRATION FLOW COMPLETED ===")
-
-        } catch {
-            Logger.error("❌ Error in register: \(error)")
-            DispatchQueue.main.async {
-                self.errorMessage = "Failed to handle Liquid Auth URI Registration flow: \(error.localizedDescription)"
-                self.scannedMessage = nil
-            }
-        }
-    }
-
-    private func authenticate(origin: String, requestId: String) async {
-        defer {
-            isLoading = false
-        }
-
-        do {
-            Logger.debug("🚀 === AUTHENTICATION FLOW STARTED ===")
-            Logger.debug("Origin: \(origin)")
-            Logger.debug("Request ID: \(requestId)")
-
-            // REQUEST USER VERIFICATION BEFORE STARTING AUTHENTICATION
-            Logger.debug("🔐 Requesting user verification before authentication")
-            let userVerified = await requireUserVerification(reason: "Authenticate to sign in with Liquid Auth")
-            guard userVerified else {
-                Logger.error("❌ User verification failed for authentication")
-                DispatchQueue.main.async {
-                    self.scannedMessage = nil
-                    self.errorMessage = "User verification is required for authentication"
-                }
-                return
-            }
-            Logger.debug("✅ User verification successful for authentication")
-
-            Logger.debug("🔑 Getting wallet information...")
-            // Get wallet information
-            let walletInfo = try getWalletInfo(origin: origin)
-            Logger.debug("✅ Wallet info retrieved - Address: \(walletInfo.address)")
-            Logger.debug("🔑 P256 KeyPair public key: \(walletInfo.p256KeyPair.publicKey.rawRepresentation.map { String(format: "%02hhx", $0) }.joined())")
-            Logger.debug("🔑 P256 KeyPair public key size: \(walletInfo.p256KeyPair.publicKey.rawRepresentation.count) bytes")
-            Logger.debug("🏢 Origin used for key derivation: \(origin)")
-
-            // Create protocol implementations for this wallet
-            Logger.debug("🏗️ Creating protocol implementations...")
-            let challengeSigner = walletInfo.createChallengeSigner()
-            let messageHandler = walletInfo.createMessageHandler()
-            Logger.debug("✅ Protocol implementations created")
-
-            // Create LiquidAuth client
-            Logger.debug("📱 Creating LiquidAuth client...")
-            let client = LiquidAuthSDK.LiquidAuthClient()
-            Logger.debug("✅ LiquidAuth client created")
-
-            // Perform authentication using the SDK
-            // Let the SDK handle WebAuthn user verification internally
-
-            let deviceInfo = getDeviceInformation()
-
-            Logger.debug("🎯 Calling SDK authenticate method...")
-            let result = try await client.authenticate(
-                origin: origin,
-                requestId: requestId,
-                algorandAddress: walletInfo.address,
-                challengeSigner: challengeSigner,
-                p256KeyPair: walletInfo.p256KeyPair,
-                messageHandler: messageHandler,
-                userAgent: deviceInfo.userAgent,
-                device: deviceInfo.device
-            )
-            Logger.debug("📋 SDK authenticate method completed")
-
-            DispatchQueue.main.async {
-                if result.success {
-                    Logger.debug("✅ Authentication completed successfully")
-                    self.scannedMessage = "Authentication completed successfully."
-                    self.errorMessage = nil
-                } else {
-                    Logger.error("❌ Authentication failed: \(result.errorMessage ?? "Unknown error")")
-                    self.scannedMessage = nil
-                    self.errorMessage = result.errorMessage
-                }
-            }
-            Logger.debug("🏁 === AUTHENTICATION FLOW COMPLETED ===")
-
-        } catch {
-            Logger.error("❌ Error in authenticate: \(error)")
-            DispatchQueue.main.async {
-                self.errorMessage = "Failed to retrieve authentication options: \(error.localizedDescription)"
-                self.scannedMessage = nil
-            }
         }
     }
 }
