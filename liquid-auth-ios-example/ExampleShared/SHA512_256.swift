@@ -11,8 +11,9 @@ import Foundation
 
 // MARK: - SHA512_256
 
-struct SHA512_256 {
-    func hash(_ message: [UInt8]) -> [UInt8] {
+public struct SHA512_256 {
+    public init() {}
+    public func hash(_ message: [UInt8]) -> [UInt8] {
         SHA2.hash64Bit(message: message)
     }
 }

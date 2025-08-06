@@ -1,6 +1,7 @@
 import AuthenticationServices
 import AVFoundation
 import LiquidAuthSDK
+import ExampleShared
 import SwiftUI
 
 struct ContentView: View {
