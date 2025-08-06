@@ -1,5 +1,5 @@
 //
-//  liquid_auth_exampleUITestsLaunchTests.swift
+//  liquid_auth_ios_exampleUITestsLaunchTests.swift
 //  liquid-auth-ios-exampleUITests
 //
 //  Created by Yared Efrem Afework on 2025-04-11.

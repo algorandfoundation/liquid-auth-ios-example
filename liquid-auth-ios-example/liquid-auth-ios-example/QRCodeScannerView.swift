@@ -1,5 +1,5 @@
-import SwiftUI
 import AVFoundation
+import SwiftUI
 import UIKit
 
 struct QRCodeScannerView: UIViewControllerRepresentable {
@@ -12,10 +12,11 @@ struct QRCodeScannerView: UIViewControllerRepresentable {
             self.captureSession = captureSession
         }
 
-        func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+        func metadataOutput(_: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from _: AVCaptureConnection) {
             if let metadataObject = metadataObjects.first as? AVMetadataMachineReadableCodeObject,
                metadataObject.type == .qr,
-               let stringValue = metadataObject.stringValue {
+               let stringValue = metadataObject.stringValue
+            {
                 // Stop the capture session to prevent repeated scans
                 captureSession?.stopRunning()
 
@@ -62,5 +63,5 @@ struct QRCodeScannerView: UIViewControllerRepresentable {
         return viewController
     }
 
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+    func updateUIViewController(_: UIViewController, context _: Context) {}
 }

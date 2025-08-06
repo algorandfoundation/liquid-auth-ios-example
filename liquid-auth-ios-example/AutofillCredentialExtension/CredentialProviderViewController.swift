@@ -1,4 +1,5 @@
 import AuthenticationServices
+import Base32
 import CryptoKit
 import deterministicP256_swift
 import LiquidAuthSDK
@@ -7,7 +8,6 @@ import MnemonicSwift
 import SwiftCBOR
 import UIKit
 import x_hd_wallet_api
-import Base32
 
 /**
  * IMPORTANT: AutoFill Credential Extension
@@ -118,32 +118,6 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         }
     }
 
-    // Authentication flow
-    override func prepareInterfaceToProvideCredential(for request: ASCredentialRequest) {
-        if #available(iOSApplicationExtension 17.0, *) {
-            guard let passkeyRequest = request as? ASPasskeyCredentialRequest,
-                  let credentialIdentity = passkeyRequest.credentialIdentity as? ASPasskeyCredentialIdentity else { return }
-            Task {
-                let consent = await presentUserConsentAlert(
-                    title: "Use Passkey",
-                    message: "Do you want to use your passkey to sign in?"
-                )
-                guard consent else {
-                    self.extensionContext.cancelRequest(withError: NSError(domain: "User cancelled", code: -1))
-                    return
-                }
-                do {
-                    let credential: ASPasskeyAssertionCredential = try await createAssertionCredential(for: passkeyRequest)
-                    await extensionContext.completeAssertionRequest(using: credential)
-                } catch {
-                    self.extensionContext.cancelRequest(withError: error)
-                }
-            }
-        } else {
-            extensionContext.cancelRequest(withError: NSError(domain: "Passkeys require iOS 17+", code: -1))
-        }
-    }
-
     func presentUserConsentAlert(title: String, message: String) async -> Bool {
         await withCheckedContinuation { continuation in
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
@@ -233,46 +207,6 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             clientDataHash: clientDataHash,
             credentialID: credentialID,
             attestationObject: attestationObject
-        )
-    }
-
-    // Authentication
-    private func createAssertionCredential(for request: ASPasskeyCredentialRequest) async throws -> ASPasskeyAssertionCredential {
-        guard let credentialIdentity = request.credentialIdentity as? ASPasskeyCredentialIdentity else {
-            throw NSError(domain: "Missing credential identity", code: -1)
-        }
-        let origin = credentialIdentity.relyingPartyIdentifier
-        let userHandleData = credentialIdentity.userHandle
-
-        let walletInfo = try getWalletInfo(origin: origin)
-        let derivedCredentialID = Data(Utility.hashSHA256(walletInfo.p256KeyPair.publicKey.rawRepresentation))
-
-        // Only present if the credentialID matches what the system is asking for
-        guard derivedCredentialID == credentialIdentity.credentialID else {
-            throw NSError(domain: "No matching credential found", code: -1)
-        }
-
-        let signature = try walletInfo.p256KeyPair.signature(for: request.clientDataHash)
-        let sigData = signature.derRepresentation
-
-        // Proper authenticatorData for assertion
-        let rpIdHash = Utility.hashSHA256(origin.data(using: .utf8)!)
-        let authenticatorData = AuthenticatorData.assertion(
-            rpIdHash: rpIdHash,
-            userPresent: true,
-            userVerified: true,
-            backupEligible: true,
-            backupState: true,
-            signCount: 0
-        ).toData()
-
-        return ASPasskeyAssertionCredential(
-            userHandle: userHandleData,
-            relyingParty: origin,
-            signature: sigData,
-            clientDataHash: request.clientDataHash,
-            authenticatorData: authenticatorData,
-            credentialID: derivedCredentialID
         )
     }
 
