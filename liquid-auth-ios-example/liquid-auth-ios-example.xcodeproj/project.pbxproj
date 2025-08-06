@@ -16,6 +16,7 @@
 		6EA62D392E20702E00C80BF0 /* SwiftCBOR in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA62D382E20702E00C80BF0 /* SwiftCBOR */; };
 		6EB1BFFC2DE6105800D2CD0F /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EB1BFFB2DE6105700D2CD0F /* AuthenticationServices.framework */; };
 		6EB1C0072DE6105800D2CD0F /* AutofillCredentialExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 6EB1BFFA2DE6105700D2CD0F /* AutofillCredentialExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		6EE35C752E438B600036AF24 /* x-hd-wallet-api in Frameworks */ = {isa = PBXBuildFile; productRef = 6EE35C742E438B600036AF24 /* x-hd-wallet-api */; };
 		6EE537E92DBD631D0032EC12 /* MnemonicSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6EE537E82DBD631D0032EC12 /* MnemonicSwift */; };
 		6EFCAC802E2737610010B46B /* Base32 in Frameworks */ = {isa = PBXBuildFile; productRef = 6EFCAC7F2E2737610010B46B /* Base32 */; };
 		6EFCAC822E2737680010B46B /* Base32 in Frameworks */ = {isa = PBXBuildFile; productRef = 6EFCAC812E2737680010B46B /* Base32 */; };
@@ -137,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EFCAC822E2737680010B46B /* Base32 in Frameworks */,
+				6EE35C752E438B600036AF24 /* x-hd-wallet-api in Frameworks */,
 				6E0F0F442DF6B382002035B7 /* MnemonicSwift in Frameworks */,
 				6E0F0F4A2DF6B382002035B7 /* deterministicP256-swift in Frameworks */,
 				6EB1BFFC2DE6105800D2CD0F /* AuthenticationServices.framework in Frameworks */,
@@ -279,6 +281,7 @@
 				6E0F0F492DF6B382002035B7 /* deterministicP256-swift */,
 				6EFCAC812E2737680010B46B /* Base32 */,
 				6E1118AB2E398C1D00A5FED9 /* LiquidAuthSDK */,
+				6EE35C742E438B600036AF24 /* x-hd-wallet-api */,
 			);
 			productName = AutofillCredentialExtension;
 			productReference = 6EB1BFFA2DE6105700D2CD0F /* AutofillCredentialExtension.appex */;
@@ -864,6 +867,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6EA62D372E20702E00C80BF0 /* XCRemoteSwiftPackageReference "SwiftCBOR" */;
 			productName = SwiftCBOR;
+		};
+		6EE35C742E438B600036AF24 /* x-hd-wallet-api */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6E1118B42E415E0300A5FED9 /* XCRemoteSwiftPackageReference "xHD-Wallet-API-swift" */;
+			productName = "x-hd-wallet-api";
 		};
 		6EE537E82DBD631D0032EC12 /* MnemonicSwift */ = {
 			isa = XCSwiftPackageProductDependency;
