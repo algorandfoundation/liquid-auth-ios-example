@@ -3,7 +3,7 @@ Welcome to the Example app and extension showcasing Liquid Auth iOS (LiquidAuthS
 
 For the Liquid Auth iOS SDK, [press here](https://github.com/algorandfoundation/liquid-auth-ios).
 
-For the Liquid Auth official documentation, [press here](liquidauth.com).
+For the Liquid Auth official documentation, [press here](https://liquidauth.com).
 
 # Structure
 
