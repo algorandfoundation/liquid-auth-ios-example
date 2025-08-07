@@ -1,3 +1,19 @@
+/*
+ * Copyright 2025 Algorand Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import AuthenticationServices
 import Base32
 import CryptoKit
@@ -22,9 +38,6 @@ import x_hd_wallet_api
  */
 
 class CredentialProviderViewController: ASCredentialProviderViewController {
-    private var tableDataSource: UITableViewDataSource?
-    private var tableDelegate: UITableViewDelegate?
-
     // Registration flow
     override func prepareInterface(forPasskeyRegistration request: ASCredentialRequest) {
         if #available(iOSApplicationExtension 17.0, *) {
@@ -60,61 +73,56 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
     }
 
     override func prepareCredentialList(
-        for serviceIdentifiers: [ASCredentialServiceIdentifier],
+        for _: [ASCredentialServiceIdentifier],
         requestParameters: ASPasskeyCredentialRequestParameters
     ) {
         var credentials: [ASPasskeyAssertionCredential] = []
 
-        if serviceIdentifiers.isEmpty {
-            // Use relyingPartyIdentifier from requestParameters
-            let origin = requestParameters.relyingPartyIdentifier
-            if let walletInfo = try? getWalletInfo(origin: origin) {
-                let credentialID = Data(Utility.hashSHA256(walletInfo.p256KeyPair.publicKey.rawRepresentation))
-                let userHandleData = Data(walletInfo.address.utf8)
-                let clientDataHash = requestParameters.clientDataHash
+        // Use relyingPartyIdentifier from requestParameters
+        let origin = requestParameters.relyingPartyIdentifier
+        if let walletInfo = try? getWalletInfo(origin: origin) {
+            let credentialID = Data(Utility.hashSHA256(walletInfo.p256KeyPair.publicKey.rawRepresentation))
+            let userHandleData = Data(walletInfo.address.utf8)
+            let clientDataHash = requestParameters.clientDataHash
 
-                // Authenticator data
-                let rpIdHash = Utility.hashSHA256(origin.data(using: .utf8)!)
-                let authenticatorData = LiquidAuthSDK.AuthenticatorData.assertion(
-                    rpIdHash: rpIdHash,
-                    userPresent: true,
-                    userVerified: true,
-                    backupEligible: true,
-                    backupState: true,
-                    signCount: 0
-                ).toData()
+            // Authenticator data
+            let rpIdHash = Utility.hashSHA256(origin.data(using: .utf8)!)
+            let authenticatorData = LiquidAuthSDK.AuthenticatorData.assertion(
+                rpIdHash: rpIdHash,
+                userPresent: true,
+                userVerified: true,
+                backupEligible: true,
+                backupState: true,
+                signCount: 0
+            ).toData()
 
-                // Signature: sign authenticatorData || clientDataHash
-                let dataToSign = authenticatorData + clientDataHash
-                let signature: Data
-                do {
-                    signature = try walletInfo.p256KeyPair.signature(for: dataToSign).derRepresentation
-                } catch {
-                    NSLog("Failed to sign assertion: \(error)")
-                    signature = Data()
-                }
-
-                let credential = ASPasskeyAssertionCredential(
-                    userHandle: userHandleData,
-                    relyingParty: origin,
-                    signature: signature,
-                    clientDataHash: clientDataHash,
-                    authenticatorData: authenticatorData,
-                    credentialID: credentialID
-                )
-                credentials.append(credential)
+            // Signature: sign authenticatorData || clientDataHash
+            let dataToSign = authenticatorData + clientDataHash
+            let signature: Data
+            do {
+                signature = try walletInfo.p256KeyPair.signature(for: dataToSign).derRepresentation
+            } catch {
+                NSLog("Failed to sign assertion: \(error)")
+                signature = Data()
             }
-        } else {
-            credentials = fetchCredentials(for: serviceIdentifiers)
+
+            let credential = ASPasskeyAssertionCredential(
+                userHandle: userHandleData,
+                relyingParty: origin,
+                signature: signature,
+                clientDataHash: clientDataHash,
+                authenticatorData: authenticatorData,
+                credentialID: credentialID
+            )
+            credentials.append(credential)
         }
 
-        presentCredentialSelectionUI(credentials: credentials) { [weak self] selectedCredential in
-            Task {
-                if let credential = selectedCredential {
-                    await self?.extensionContext.completeAssertionRequest(using: credential)
-                } else {
-                    self?.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.Code.userCanceled.rawValue))
-                }
+        // Only 0 or 1 credential is ever present; auto-select if available
+        Task { [weak self] in
+            if let credential = credentials.first {
+                await self?.extensionContext.completeAssertionRequest(using: credential)
+            } else {
+                self?.extensionContext.cancelRequest(withError: NSError(domain: ASExtensionErrorDomain, code: ASExtensionError.Code.userCanceled.rawValue))
             }
         }
     }
@@ -129,18 +137,6 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
                 continuation.resume(returning: false)
             })
             // Present on the main thread
-            DispatchQueue.main.async {
-                self.present(alert, animated: true, completion: nil)
-            }
-        }
-    }
-
-    private func presentDebugAlert(title: String, message: String) async {
-        await withCheckedContinuation { continuation in
-            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-                continuation.resume()
-            })
             DispatchQueue.main.async {
                 self.present(alert, animated: true, completion: nil)
             }
@@ -211,74 +207,11 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
         )
     }
 
-    private func fetchCredentials(for serviceIdentifiers: [ASCredentialServiceIdentifier]) -> [ASPasskeyAssertionCredential] {
-        var credentials: [ASPasskeyAssertionCredential] = []
-
-        for serviceIdentifier in serviceIdentifiers {
-            let origin = serviceIdentifier.identifier
-            guard let walletInfo = try? getWalletInfo(origin: origin) else { continue }
-            let credentialID = Data(Utility.hashSHA256(walletInfo.p256KeyPair.publicKey.rawRepresentation))
-            let userHandleData = Data(walletInfo.address.utf8) // or any deterministic value
-
-            // Dummy values for preview
-            let dummyClientDataHash = Data(repeating: 0, count: 32)
-            let rpIdHash = Utility.hashSHA256(origin.data(using: .utf8)!)
-            let authenticatorData = AuthenticatorData.assertion(
-                rpIdHash: rpIdHash,
-                userPresent: true,
-                userVerified: true,
-                backupEligible: true,
-                backupState: true,
-                signCount: 0
-            ).toData()
-            let dummySignature = Data(repeating: 0, count: 64)
-
-            let credential = ASPasskeyAssertionCredential(
-                userHandle: userHandleData,
-                relyingParty: origin,
-                signature: dummySignature,
-                clientDataHash: dummyClientDataHash,
-                authenticatorData: authenticatorData,
-                credentialID: credentialID
-            )
-            credentials.append(credential)
-        }
-        return credentials
-    }
-
-    private func isCredentialIdentityRegistered(_ identity: ASPasskeyCredentialIdentity) async -> Bool {
-        let store = ASCredentialIdentityStore.shared
-        let identities = await store.credentialIdentities(
-            forService: ASCredentialServiceIdentifier(identifier: identity.relyingPartyIdentifier, type: .domain),
-            credentialIdentityTypes: [.passkey]
-        )
-        return identities.contains { $0 is ASPasskeyCredentialIdentity && ($0 as! ASPasskeyCredentialIdentity).credentialID == identity.credentialID }
-    }
-
-    // prepareInterfaceForExtensionConfiguration()
-    // Prepares the interface to enable the user to configure the extension.
-    // The system calls this method after the user enables your extension in Settings.
-    // Use this method to prepare a user interface for configuring the extension.
-
-    private func savePasskeyIdentity(
-        relyingPartyIdentifier: String,
-        userName: String,
-        credentialID: Data,
-        userHandle: Data
-    ) {
-        let passkeyIdentity = ASPasskeyCredentialIdentity(
-            relyingPartyIdentifier: relyingPartyIdentifier,
-            userName: userName,
-            credentialID: credentialID,
-            userHandle: userHandle
-        )
-        ASCredentialIdentityStore.shared.saveCredentialIdentities([passkeyIdentity]) { success, error in
-            if success {
-                NSLog("✅ Passkey identity saved to identity store!")
-            } else if let error = error {
-                NSLog("❌ Failed to save passkey identity: \(error)")
-            }
-        }
+    override func prepareInterfaceForExtensionConfiguration() {
+        // This method is called when the user enables the extension in Settings.
+        // You can present a configuration UI here if needed.
+        // For now, we will just dismiss the view controller.
+        extensionContext.completeExtensionConfigurationRequest()
     }
 
     func requireUserVerification(reason: String = "Authenticate to continue") async -> Bool {
@@ -324,92 +257,6 @@ class CredentialProviderViewController: ASCredentialProviderViewController {
             handles.append(userHandle)
             dict[rp] = handles
             UserDefaults.standard.set(dict, forKey: "registeredUserHandles")
-        }
-    }
-
-    private func presentCredentialSelectionUI(
-        credentials: [ASPasskeyAssertionCredential],
-        completion: @escaping (ASPasskeyAssertionCredential?) -> Void
-    ) {
-        // If only one credential, auto-select it
-        if credentials.count == 1 {
-            completion(credentials.first)
-            return
-        }
-
-        // Otherwise, present a simple table view for selection
-        let tableVC = UITableViewController(style: .plain)
-        tableVC.title = "Select Passkey"
-        tableVC.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CredentialCell")
-
-        // Store credentials locally for the data source/selection
-        var selectedCredential: ASPasskeyAssertionCredential?
-        let creds = credentials
-
-        let dataSource = SimpleTableDataSource(
-            credentials: creds,
-            configure: { cell, credential in
-                cell.textLabel?.text = credential.userHandle.base64EncodedString()
-                cell.detailTextLabel?.text = credential.relyingParty
-            }
-        )
-        let delegate = SimpleTableDelegate(
-            credentials: creds,
-            onSelect: { credential in
-                selectedCredential = credential
-                tableVC.dismiss(animated: true) {
-                    completion(selectedCredential)
-                }
-            }
-        )
-
-        tableVC.tableView.dataSource = dataSource
-        tableVC.tableView.delegate = delegate
-
-        tableDataSource = dataSource
-        tableDelegate = delegate
-
-        // Present the table view controller modally
-        let nav = UINavigationController(rootViewController: tableVC)
-        DispatchQueue.main.async {
-            self.present(nav, animated: true, completion: nil)
-        }
-    }
-
-    // Helper classes for table view data source and delegate
-    private class SimpleTableDataSource: NSObject, UITableViewDataSource {
-        let credentials: [ASPasskeyAssertionCredential]
-        let configure: (UITableViewCell, ASPasskeyAssertionCredential) -> Void
-
-        init(credentials: [ASPasskeyAssertionCredential], configure: @escaping (UITableViewCell, ASPasskeyAssertionCredential) -> Void) {
-            self.credentials = credentials
-            self.configure = configure
-        }
-
-        func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-            return credentials.count
-        }
-
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "CredentialCell", for: indexPath)
-            let credential = credentials[indexPath.row]
-            configure(cell, credential)
-            return cell
-        }
-    }
-
-    private class SimpleTableDelegate: NSObject, UITableViewDelegate {
-        let credentials: [ASPasskeyAssertionCredential]
-        let onSelect: (ASPasskeyAssertionCredential) -> Void
-
-        init(credentials: [ASPasskeyAssertionCredential], onSelect: @escaping (ASPasskeyAssertionCredential) -> Void) {
-            self.credentials = credentials
-            self.onSelect = onSelect
-        }
-
-        func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let credential = credentials[indexPath.row]
-            onSelect(credential)
         }
     }
 }

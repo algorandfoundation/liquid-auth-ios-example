@@ -1,7 +1,23 @@
+/*
+ * Copyright 2025 Algorand Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import AuthenticationServices
 import AVFoundation
-import LiquidAuthSDK
 import ExampleShared
+import LiquidAuthSDK
 import SwiftUI
 
 struct ContentView: View {
@@ -14,6 +30,9 @@ struct ContentView: View {
     @State private var actionSheetOrigin: String?
     @State private var actionSheetRequestId: String?
 
+    @State private var algorandAddress: String? = nil
+    @State private var showCopyConfirmation = false
+
     var body: some View {
         ZStack {
             NavigationStack {
@@ -22,6 +41,37 @@ struct ContentView: View {
                         .imageScale(.large)
                         .foregroundStyle(.tint)
                     Text("Ready to scan?")
+
+                    if let address = algorandAddress {
+                        Text("Algorand Address:")
+                            .font(.headline)
+                            .padding(.top, 8)
+                        HStack(spacing: 8) {
+                            Text("\(address.prefix(6))...\(address.suffix(6))")
+                                .font(.system(.footnote, design: .monospaced))
+                                .lineLimit(1)
+                                .truncationMode(.middle)
+                            Button(action: {
+                                UIPasteboard.general.string = address
+                                showCopyConfirmation = true
+                            }) {
+                                Image(systemName: "doc.on.doc")
+                                    .foregroundColor(.blue)
+                            }
+                            .buttonStyle(.borderless)
+                            .accessibilityLabel("Copy address")
+                        }
+                        .padding(.bottom, 8)
+                        if showCopyConfirmation {
+                            Text("Copied!")
+                                .font(.caption)
+                                .foregroundColor(.green)
+                                .transition(.opacity)
+                        }
+                    } else {
+                        ProgressView("Generating address...")
+                            .padding(.vertical, 8)
+                    }
 
                     Button(action: {
                         isScanning = true
@@ -61,6 +111,23 @@ struct ContentView: View {
                     actionSheet
                 }
                 .navigationTitle("Liquid Auth")
+                .onAppear {
+                    // Generate Algorand address once when view appears
+                    if algorandAddress == nil {
+                        Task {
+                            do {
+                                let walletInfo = try getWalletInfo(origin: "liquid-auth-example")
+                                DispatchQueue.main.async {
+                                    self.algorandAddress = walletInfo.address
+                                }
+                            } catch {
+                                DispatchQueue.main.async {
+                                    self.algorandAddress = "Error generating address"
+                                }
+                            }
+                        }
+                    }
+                }
                 .onDisappear {
                     // Reset state when navigating back
                     resetState()
@@ -97,6 +164,7 @@ struct ContentView: View {
                                     let state = await ASCredentialIdentityStore.shared.state()
                                     if !state.isEnabled {
                                         Logger.warning("AutoFill is not enabled")
+
                                         DispatchQueue.main.async {
                                             self.scannedMessage = nil
                                             self.errorMessage = "AutoFill Passwords & Passkeys is not enabled for Liquid Auth. Please enable it in Settings > General > AutoFill & Passwords."
@@ -220,10 +288,7 @@ struct ContentView: View {
         showActionSheet = false // Ensure action sheet is hidden
 
         if code.starts(with: "FIDO:/") {
-            // Decode the FIDO URI
-            /*
-             // Should call the "Save Passkey" API that the camera app calls
-              */
+            showFIDOAlert()
         } else if code.starts(with: "liquid://") {
             // Handle Liquid Auth URI
             isLoading = true
@@ -232,6 +297,20 @@ struct ContentView: View {
             Logger.error("Unsupported QR code format: \(code)")
             errorMessage = "Unsupported QR code format."
             scannedMessage = nil
+        }
+    }
+
+    private func showFIDOAlert() {
+        let alert = UIAlertController(
+            title: "Scan with Camera App",
+            message: "This is a FIDO:/ QR Code. Please scan this QR code using the iPhone Camera app.",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController
+        {
+            rootVC.present(alert, animated: true, completion: nil)
         }
     }
 
